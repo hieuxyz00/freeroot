@@ -30,9 +30,9 @@ fi
 
 case $install_ubuntu in
   [yY][eE][sS])
-    wget --tries=$max_retries --timeout=$timeout --no-hsts -O /tmp/rootfs.tar.gz \
-      "http://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.2-base-${ARCH_ALT}.tar.gz"
-    tar -xf /tmp/rootfs.tar.gz -C $ROOTFS_DIR
+    wget --tries=$max_retries --timeout=$timeout --no-hsts -O ./rootfs.tar.gz \
+      "http://cdimage.ubuntu.com/ubuntu-base/releases/25.04/release/ubuntu-base-25.04-base-${ARCH_ALT}.tar.gz"
+    tar -xf ./rootfs.tar.gz -C $ROOTFS_DIR
     ;;
   *)
     echo "Skipping Ubuntu installation."
@@ -61,7 +61,7 @@ fi
 
 if [ ! -e $ROOTFS_DIR/.installed ]; then
   printf "nameserver 1.1.1.1\nnameserver 1.0.0.1" > ${ROOTFS_DIR}/etc/resolv.conf
-  rm -rf /tmp/rootfs.tar.xz /tmp/sbin
+  rm -rf ./rootfs.tar.xz /tmp/sbin
   touch $ROOTFS_DIR/.installed
 fi
 
