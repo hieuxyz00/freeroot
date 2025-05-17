@@ -2,8 +2,6 @@
 
 ROOTFS_DIR=$(pwd)
 export PATH=$PATH:~/.local/usr/bin
-max_retries=50
-timeout=1
 ARCH=$(uname -m)
 
 if [ "$ARCH" = "x86_64" ]; then
@@ -30,7 +28,7 @@ fi
 
 case $install_ubuntu in
   [yY][eE][sS])
-    wget --tries=$max_retries --timeout=$timeout --no-hsts -O ./rootfs.tar.gz \
+    wget -O ./rootfs.tar.gz \
       "http://cdimage.ubuntu.com/ubuntu-base/releases/25.04/release/ubuntu-base-25.04-base-${ARCH_ALT}.tar.gz"
     tar -xf ./rootfs.tar.gz -C $ROOTFS_DIR
     ;;
@@ -41,15 +39,15 @@ esac
 
 if [ ! -e $ROOTFS_DIR/.installed ]; then
   mkdir $ROOTFS_DIR/usr/local/bin -p
-  wget --tries=$max_retries --timeout=$timeout --no-hsts -O $ROOTFS_DIR/usr/local/bin/proot "https://raw.githubusercontent.com/foxytouxxx/freeroot/main/proot-${ARCH}"
+  wget -O $ROOTFS_DIR/usr/local/bin/proot "https://raw.githubusercontent.com/foxytouxxx/freeroot/main/proot-${ARCH}"
 
   while [ ! -s "$ROOTFS_DIR/usr/local/bin/proot" ]; do
     rm $ROOTFS_DIR/usr/local/bin/proot -rf
-    wget --tries=$max_retries --timeout=$timeout --no-hsts -O $ROOTFS_DIR/usr/local/bin/proot "https://raw.githubusercontent.com/foxytouxxx/freeroot/main/proot-${ARCH}"
+    wget -O $ROOTFS_DIR/usr/local/bin/proot "https://raw.githubusercontent.com/foxytouxxx/freeroot/main/proot-${ARCH}"
 
     if [ -s "$ROOTFS_DIR/usr/local/bin/proot" ]; then
       chmod 755 $ROOTFS_DIR/usr/local/bin/proot
-      break
+  
     fi
 
     chmod 755 $ROOTFS_DIR/usr/local/bin/proot
